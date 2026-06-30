@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Seasons — An Endless Cycle</title>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/layout.css">
+    
+    <!-- Favicon (Placeholder path) -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body>
+
+    <!-- 1. ENTRY SCREEN: Captures first click to unlock Audio Context -->
+    <div class="entry-screen">
+        <h1 class="entry-title">Seasons</h1>
+        <p class="entry-cta">Click to begin the journey</p>
+    </div>
+
+    <!-- 2. MAIN VIEWPORT WRAPPER -->
+    <div class="viewport-wrapper">
+        
+        <!-- The Living Canvas -->
+        <div class="canvas-container">
+            <canvas id="landscape-canvas"></canvas>
+        </div>
+
+        <!-- Invisible Scroll Track: Gives the browser native momentum scrolling to read -->
+        <div class="scroll-track"></div>
+
+        <!-- Painterly Texture Overlay (Optional: requires noise.png in assets/textures/) -->
+        <div class="texture-overlay"></div>
+
+        <!-- 3. OVERLAY LAYER: Text and minimal UI -->
+        <div class="overlay-layer">
+            
+            <!-- Seasonal Story Quote -->
+            <p class="story-quote"></p>
+
+            <!-- Invisible Mute Button -->
+            <button class="ui-control audio-toggle" aria-label="Toggle Audio">
+                <!-- Simple SVG Speaker Icon (Visible on hover) -->
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M11 5L6 9H2v6h4l5 4V5z" fill="currentColor"/>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/>
+                </svg>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- Main Entry Point -->
+    <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
