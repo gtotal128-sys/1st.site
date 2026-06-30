@@ -1,0 +1,94 @@
+/* ==================== VIEWPORT LOCK ==================== */
+/* Forces the browser viewport to act as a single window into the world */
+.viewport-wrapper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden; /* Prevents actual visual scrolling of the body */
+}
+
+/* ==================== CANVAS LAYER ==================== */
+/* The living painting that stays fixed in the center of the screen */
+.canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Sits behind the text and UI */
+}
+
+#landscape-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    /* Prevents blurriness on high-DPI (Retina) screens - 
+       Actual pixel dimensions will be set via JS, 
+       but this ensures the CSS stretches it perfectly */
+    object-fit: cover; 
+}
+
+/* ==================== SCROLL INTERACTION LAYER ==================== */
+/* 
+ * Instead of faking scroll with JS (which ruins trackpad momentum),
+ * we use a massively tall, invisible div. The user scrolls this div 
+ * natively for perfectly smooth physics, while JS reads the scroll 
+ * position to animate the fixed canvas behind it.
+ */
+.scroll-track {
+    position: relative;
+    z-index: 0; /* Behind the canvas */
+    width: 100%;
+    /* 
+     * 500vh gives enough scroll distance to comfortably fit 
+     * Summer -> Autumn -> Winter -> Spring -> (Loop overlap back to Summer)
+     */
+    height: 500vh; 
+    pointer-events: auto; /* Must receive scroll wheel/trackpad events */
+}
+
+/* Make the scroll track completely invisible to the eye */
+.scroll-track::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    pointer-events: none; /* Let clicks pass through if needed, but keep scroll */
+}
+
+/* ==================== OVERLAY LAYERS ==================== */
+/* Ensure text and UI float above both the canvas and the scroll track */
+.overlay-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none; /* Let scroll events pass through to .scroll-track */
+}
+
+/* Re-enable pointer events specifically for interactive UI items inside the overlay */
+.overlay-layer .ui-control,
+.overlay-layer .story-quote {
+    pointer-events: auto; 
+}
+
+/* ==================== NOISE / TEXTURE OVERLAY ==================== */
+/* Optional subtle film grain to enhance the 'painterly' feel */
+.texture-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5; /* Above canvas, below text */
+    pointer-events: none;
+    opacity: 0.05; /* Very subtle */
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E"); /* Assuming a noise texture is provided */
+    background-repeat: repeat;
+    mix-blend-mode: overlay;
+}

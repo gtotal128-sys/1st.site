@@ -1,0 +1,152 @@
+/* ==================== RESET & BASE ==================== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* JS will handle the virtual scroll */
+    background-color: #0a0a0a; /* Dark fallback before canvas loads */
+    font-family: 'Georgia', 'Times New Roman', serif; /* Elegant, classic base */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hide scrollbars completely to maintain the "painting" illusion */
+body::-webkit-scrollbar {
+    display: none;
+}
+body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Prevent text selection while interacting with the landscape */
+body {
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* Custom selection color for any accidental highlights */
+::selection {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+}
+
+/* ==================== TYPOGRAPHY ==================== */
+h1, h2, p, span {
+    font-weight: normal;
+    letter-spacing: 0.02em;
+}
+
+/* ==================== SEASONAL QUOTES ==================== */
+.story-quote {
+    position: fixed;
+    bottom: 15%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80%;
+    max-width: 600px;
+    text-align: center;
+    color: #fff;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    line-height: 1.6;
+    font-style: italic;
+    opacity: 0;
+    pointer-events: none; /* Let scroll/mouse events pass through to canvas */
+    z-index: 10;
+    
+    /* Deep shadow to ensure readability over bright skies or dark winters */
+    text-shadow: 
+        0 2px 10px rgba(0, 0, 0, 0.6), 
+        0 0px 40px rgba(0, 0, 0, 0.4);
+    
+    /* Smooth fade-in/out handled by JS, but base transition set here */
+    transition: opacity 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.story-quote.visible {
+    opacity: 1;
+}
+
+/* ==================== INVISIBLE UI ==================== */
+.ui-control {
+    position: fixed;
+    z-index: 50;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.ui-control:hover {
+    opacity: 0.8 !important;
+}
+
+/* Mute / Unmute Button */
+.audio-toggle {
+    bottom: 30px;
+    right: 30px;
+    width: 32px;
+    height: 32px;
+    fill: #fff;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    opacity: 0.3; /* Barely visible until hovered */
+}
+
+/* ==================== ENTRY SCREEN ==================== */
+.entry-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    cursor: pointer;
+    transition: opacity 1.5s ease, visibility 1.5s ease;
+}
+
+.entry-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.entry-title {
+    color: #e0e0e0;
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.entry-cta {
+    color: #888;
+    font-size: 1rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    animation: pulse-soft 3s infinite ease-in-out;
+}
+
+@keyframes pulse-soft {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+}
+
+/* ==================== CURSOR & INTERACTIONS ==================== */
+/* Ensure no default cursor changes over the canvas area */
+canvas {
+    display: block;
+    cursor: default;
+}
